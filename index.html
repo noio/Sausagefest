@@ -74,7 +74,7 @@
            FB.api('/'+eid+'/attending', function(response){
                window.attendees = {}
                for (var i = 0; i < response.data.length; i++){
-                   FB.api('/'+eid, function(person){
+                   FB.api('/'+response.data[i].id, function(person){
                        window.attendees[person.id] = person;
                    });           
                }
