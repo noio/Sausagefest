@@ -29,13 +29,6 @@
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
   
-  <script type="text/javascript" charset="utf-8">
-  function alertname(){
-      FB.api('/me', function(response) {
-        alert('Your name is ' + response.name);
-      });
-  }
-  </script>
 </head>
 
 <body>
@@ -50,7 +43,16 @@
           xfbml      : true  // parse XFBML
         });
 
-        // Additional initialization code here
+        FB.login(function(response) {
+           if (response.authResponse) {
+             console.log('Welcome!  Fetching your information.... ');
+             FB.api('/me', function(response) {
+               console.log('Good to see you, ' + response.name + '.');
+             });
+           } else {
+             console.log('User cancelled login or did not fully authorize.');
+           }
+         });
       };
 
       // Load the SDK Asynchronously
@@ -65,9 +67,7 @@
   
     <h1><a href="https://github.com/noio/Sausagefest">Sausagefest</a>
       <span class="small">by <a href="https://github.com/noio">noio</a></span></h1>
-          <fb:login-button perms="read_stream,publish_stream">
-            Grant Permissions to make more examples work
-          </fb:login-button>
-      <a href="#" onclick="alertname(); return false;">CLICKME</a>
+
+
 </body>
 </html>
