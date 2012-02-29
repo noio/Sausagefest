@@ -62,8 +62,8 @@
 
          
     function loginAndFetch(){
-        eid = window.eventid;
         $('#login h1').html("Checking...");
+        eid = window.eventid;
         FB.login(function(response) {
            if (response.authResponse) {
              FB.api('/me', function(response) {
