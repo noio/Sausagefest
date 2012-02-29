@@ -28,6 +28,14 @@
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
+  
+  <script type="text/javascript" charset="utf-8">
+  function alertname(){
+      FB.api('/me', function(response) {
+        alert('Your name is ' + response.name);
+      });
+  }
+  </script>
 </head>
 
 <body>
@@ -57,6 +65,7 @@
   
     <h1><a href="https://github.com/noio/Sausagefest">Sausagefest</a>
       <span class="small">by <a href="https://github.com/noio">noio</a></span></h1>
-
+      
+      <a href="#" onclick="alertname(); return false;">CLICKME</a>
 </body>
 </html>
