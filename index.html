@@ -128,11 +128,12 @@
     
     function showVerdict(){
         var genders = $.groupBy(window.attendees, 'gender')
-        men = genders["male"].length;
-        women = genders["female"].length;
-        if (men > women){
+        var men = genders["male"].length;
+        var women = genders["female"].length;
+        var score = (men / (men+women))
+        if (score > 0.55){
             $('#results h1').html($.shuffle(MEN)[0]);
-        } else if (women > men) {
+        } else if (score < 0.45) {
             $('#results h1').html($.shuffle(WOMEN)[0]);
         } else {
             $('#results h1').html($.shuffle(EVEN)[0]);
