@@ -3,23 +3,27 @@
 <head>
     <meta charset='utf-8'>
 
-    <title>noio/Sausagefest @ GitHub</title>
+    <title>Is your party a sausagefest?</title>
     <script src="ender.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 
     <style type="text/css">
         body {
         margin-top: 1.0em;
         background-color: #230f24;
-        font-family: Helvetica, Arial, FreeSans, san-serif;
+        font-family: Helvetica, Arial, FreeSans, sans-serif;
         color: #ffffff;
         }
+        h1  {font-family: 'Pacifico'; }
         #container { margin: 0 auto;
-                     width: 800px; }
-        #icons #male { width: 400px; float: left; }
-        #icons #female {width: 400px; float: left; text-align: right;}
+                     width: 100%; }
+        #icons #male { width: 50%; float: left; }
+        #icons #female {width: 50%; float: left; text-align: right;}
+        
+        
         
         #icons span { display: block; width: 60px; height: 120px; text-indent:-9999px;}
-        span.male   { background: url('male.png'); }
+        span.male   { background: url('male.png'); float:left;}
         span.female { background: url('female.png'); float:right;}
     </style>
     <script type="text/javascript" charset="utf-8">
@@ -82,9 +86,16 @@
 
                 FB.api('/'+response.data[i].id, function(person){
                     window.attendees[person.id] = person;
+                    vislater();
                 });           
             }
         });
+    }
+    
+    visTimeout = setTimeout("vis()",1000000000);
+    function vislater(){
+        clearTimeout(visTimeout);
+        visTimeout = setTimeout("vis()",1)
     }
     
     function vis(){
