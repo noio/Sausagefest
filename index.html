@@ -63,6 +63,7 @@
          
     function loginAndFetch(){
         $('#login h1').html("Checking...");
+        $('#eventinfo .before').hide(250);
         eid = window.eventid;
         FB.login(function(response) {
            if (response.authResponse) {
@@ -95,7 +96,7 @@
         console.log(eid);
         FB.api('/'+eid, function(response){
             window.eventinfo = response;
-            $('#eventname').html(response.name);
+            $('.eventname').html(response.name);
         });
     }
     
@@ -114,6 +115,7 @@
     }
     
     function addOneByOne(){
+        $('#eventinfo .after').fadeIn(250);
         var person = window.attendees[window.toAdd.pop()];
         var g = person.gender;
         var span = $("<span>").addClass(g);
@@ -149,12 +151,14 @@
         }
         $('#logins').fadeIn(250);
         $('#results').hide();
+        $('#eventinfo .after').hide()
     })
     
     </script>
   
     <div class='cointainer' id='eventinfo'>
-        So you want to know if &ldquo;<span id='eventname'>your event</span>&rdquo; has got the perfect mix?
+        <span class='before'>So you want to know if &ldquo;<span class='eventname'>your event</span>&rdquo; has got the perfect mix?</span>
+        <span class='after'>We did the math and our rating for &ldquo;<span class='eventname'>your event</span>&rdquo; is:</span>
     </div>
         
     <div class='container' id='results'>
