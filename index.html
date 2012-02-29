@@ -1,95 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset='utf-8'>
+    <meta charset='utf-8'>
 
-  <title>noio/Sausagefest @ GitHub</title>
+    <title>noio/Sausagefest @ GitHub</title>
+    <script src="ender.min.js" type="text/javascript" charset="utf-8"></script>
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #230f24;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #dcf0db; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #dcf0db; }
-    h3 { text-align: center; color: #dcf0db; }
-    a { color: #dcf0db; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-  <script type="text/javascript" charset="utf-8">
-  // Beaver town
-  // The pie zone
-  // Taco fest
-  // Fish market
-  </script>
+    <style type="text/css">
+        body {
+        margin-top: 1.0em;
+        background-color: #230f24;
+        font-family: Helvetica, Arial, FreeSans, san-serif;
+        color: #ffffff;
+        }
+        #container {
+        margin: 0 auto;
+        width: 700px;
+        }
+        h1 { font-size: 3.8em; color: #dcf0db; margin-bottom: 3px; }
+        h1 .small { font-size: 0.4em; }
+        h1 a { text-decoration: none }
+        h2 { font-size: 1.5em; color: #dcf0db; }
+        h3 { text-align: center; color: #dcf0db; }
+        a { color: #dcf0db; }
+        .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+        .download { float: right; }
+        pre { background: #000; color: #fff; padding: 15px;}
+        hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+        .footer { text-align:center; padding-top:30px; font-style: italic; }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+    // Beaver town
+    // The pie zone
+    // Taco fiesta
+    // Fish market
+    // Oyster farm
+    // Banana republic
+    // Dong city
+    </script>
   
 </head>
 
 <body>
     <div id="fb-root"></div>
     <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '376545645690668', // App ID
-          channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
-          status     : true, // check login status
-          cookie     : true, // enable cookies to allow the server to access the session
-          xfbml      : true  // parse XFBML
+    bonzo = require('bonzo');
+    
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '376545645690668', // App ID
+        channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
+        status     : true, // check login status
+        cookie     : true, // enable cookies to allow the server to access the session
+        xfbml      : true  // parse XFBML
+      });
+
+
+    };
+
+    // Load the SDK Asynchronously
+    (function(d){
+       var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement('script'); js.id = id; js.async = true;
+       js.src = "http://connect.facebook.net/en_US/all.js";
+       ref.parentNode.insertBefore(js, ref);
+     }(document));
+     
+    function login(){
+        FB.login(function(response) {
+           if (response.authResponse) {
+             console.log('Welcome!  Fetching your information.... ');
+             FB.api('/me', function(response) {
+               console.log('' + response.name + ' logged in.');
+             });
+             attending('300480070013266');
+           } else {
+             console.log('User cancelled login or did not fully authorize.');
+           }
+         });
+    }
+    
+    window.attendees = {};
+    function attending(eid){
+        FB.api('/'+eid+'/attending', function(response){
+            window.attendees = {}
+            for (var i = 0; i < response.data.length; i++){
+
+                FB.api('/'+response.data[i].id, function(person){
+                    window.attendees[person.id] = person;
+                });           
+            }
         });
-
-
-      };
-
-      // Load the SDK Asynchronously
-      (function(d){
-         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement('script'); js.id = id; js.async = true;
-         js.src = "http://connect.facebook.net/en_US/all.js";
-         ref.parentNode.insertBefore(js, ref);
-       }(document));
-       
-       function login(){
-           FB.login(function(response) {
-              if (response.authResponse) {
-                console.log('Welcome!  Fetching your information.... ');
-                FB.api('/me', function(response) {
-                  console.log('' + response.name + ' logged in.');
-                });
-                attending('300480070013266');
-              } else {
-                console.log('User cancelled login or did not fully authorize.');
-              }
-            });
-       }
-       
-       function attending(eid){
-           FB.api('/'+eid+'/attending', function(response){
-               window.attendees = {}
-               for (var i = 0; i < response.data.length; i++){
-                   FB.api('/'+response.data[i].id, function(person){
-                       window.attendees[person.id] = person;
-                   });           
-               }
-           });
-       }
+    }
+    
+    function vis(){
+        for (id in window.attendees)
+        {
+            var person = window.attendees[id];
+            $('#icons').append("<span>"+person.gender+"</span>")
+        }
+    }
               
     </script>
   
     <div class='container'>
-        <a href="#" onclick="login(); return false;">Login to facebook</a>
+        <a href="#" onclick="login(); return false;">Check on this event: </a>
+        <div id='icons'>
+            
+        </div>
     </div>
 
 </body>
