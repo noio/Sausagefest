@@ -16,8 +16,9 @@
         color: #dddddd;
         letter-spacing: -1pt;
         }
-        h1  {font-family: 'Pacifico'; }
-
+        h1      {font-family: 'Pacifico'; }
+        a       {color: #5289BA;}
+        a:hover {color: #6BA6DD}
         #eventinfo {width: 400px; margin: auto;}
         .eventname {color: white; display: inline-block;}
         
@@ -40,6 +41,7 @@
         #logins h1 a { text-decoration: none; color: #5289BA;}
         #logins h1 a:hover {color: #6BA6DD}
         
+        #footer     {position:absolute; bottom: 5px; right: 5px;}
     </style>
   
 </head>
@@ -172,6 +174,10 @@
         
     <div class='container' id='logins'>
     <h1><a href="" onclick="loginAndFetch(); return false;">Check!</a></h1>
+    </div>
+    
+    <div id='footer'>
+        made by <a href="http://www.noio.nl">noio</a>
     </div>
 </body>
 </html>
