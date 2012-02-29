@@ -31,55 +31,32 @@
 </head>
 
 <body>
-  <a href="https://github.com/noio/Sausagefest"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '376545645690668', // App ID
+          channelUrl : '//http://noio.github.com/Sausagefest/channel.html', // Channel File
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true  // parse XFBML
+        });
 
-  <div id="container">
+        // Additional initialization code here
+      };
 
-    <div class="download">
-      <a href="https://github.com/noio/Sausagefest/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/noio/Sausagefest/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
-
+      // Load the SDK Asynchronously
+      (function(d){
+         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement('script'); js.id = id; js.async = true;
+         js.src = "//connect.facebook.net/en_US/all.js";
+         ref.parentNode.insertBefore(js, ref);
+       }(document));
+    </script>
+  
     <h1><a href="https://github.com/noio/Sausagefest">Sausagefest</a>
       <span class="small">by <a href="https://github.com/noio">noio</a></span></h1>
-
-    <div class="description">
-      Counts people (and their gender) in Facebook events.
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-      <h2>Contact</h2>
-      <p>Thomas van den Berg (paranoid.ndroid@gmail.com)<br/>      </p>
-    
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/noio/Sausagefest/zipball/master">zip</a> or
-      <a href="https://github.com/noio/Sausagefest/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/noio/Sausagefest</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/noio/Sausagefest">noio/Sausagefest</a>
-    </div>
-
-  </div>
 
 </body>
 </html>
