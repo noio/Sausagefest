@@ -98,7 +98,9 @@
         console.log(eid);
         FB.api('/'+eid, function(response){
             window.eventinfo = response;
-            $('.eventname').html('&ldquo;'+response.name+'&rdquo;');
+            if (typeof response.name !== "undefined"){
+                $('.eventname').html('&ldquo;'+response.name+'&rdquo;');
+            }
         });
     }
     
