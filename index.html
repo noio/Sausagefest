@@ -41,21 +41,16 @@
         #logins h1 a:hover {color: #6BA6DD}
         
     </style>
-    <script type="text/javascript" charset="utf-8">
-    // Beaver town
-    // The pie zone
-    // Taco fiesta
-    // Fish market
-    // Oyster farm
-    // Banana republic
-    // Dong city
-    </script>
   
 </head>
 
 <body>
     <div id="fb-root"></div>
     <script>
+    
+    MEN = ["Sausagefest", "Dong city", "Banana republic"];
+    WOMEN = ["Beaver town", "Taco fiesta", "Oyster farm"];
+    EVEN = ["Nice!"];
     
     FB.init({
       appId      : '376545645690668', // App ID
@@ -132,6 +127,16 @@
     }
     
     function showVerdict(){
+        var genders = $.groupBy(window.attendees, 'gender')
+        men = genders["male"].length;
+        women = genders["female"].length;
+        if (men > women){
+            $('#results h1').html($.shuffle(MEN)[0]);
+        } else if (women > men) {
+            $('#results h1').html($.shuffle(WOMEN)[0]);
+        } else {
+            $('#results h1').html($.shuffle(EVEN)[0]);
+        }
         $('#results h1').fadeIn(400);
     }
     
@@ -141,7 +146,6 @@
             window.eventid = window.location.hash.slice(1);
             fetchEvent(window.eventid);
         }
-    
         $('#logins').fadeIn(250);
         $('#results').hide();
     })
@@ -153,7 +157,7 @@
     </div>
         
     <div class='container' id='results'>
-        <h1>Nice!</h1>
+        <h1>...</h1>
         <div id='icons'>
             <div id='female'></div>
             <div id='male'></div>
