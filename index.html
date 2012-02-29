@@ -18,8 +18,8 @@
         }
         h1  {font-family: 'Pacifico'; }
 
-        #eventinfo {width: 340px; margin: auto;}
-        #eventname {color: white}
+        #eventinfo {width: 400px; margin: auto;}
+        .eventname {color: white; display: inline-block;}
         
         .container { margin: 0 auto;
                      width: 100%; }
@@ -96,7 +96,7 @@
         console.log(eid);
         FB.api('/'+eid, function(response){
             window.eventinfo = response;
-            $('.eventname').html(response.name);
+            $('.eventname').html('&ldquo;'+response.name+'&rdquo;');
         });
     }
     
@@ -141,6 +141,8 @@
             $('#results h1').html($.shuffle(EVEN)[0]);
         }
         $('#results h1').fadeIn(400);
+        
+        $('#eventinfo').html("We did the math and our rating for <span class='eventname'>&ldquo;" + window.eventinfo.name + "&rdquo;</span> is:");
     }
     
 
@@ -157,8 +159,7 @@
     </script>
   
     <div class='cointainer' id='eventinfo'>
-        <span class='before'>So you want to know if &ldquo;<span class='eventname'>your event</span>&rdquo; has got the perfect mix?</span>
-        <span class='after'>We did the math and our rating for &ldquo;<span class='eventname'>your event</span>&rdquo; is:</span>
+        So you want to know if <span class='eventname'>your event</span> has got the perfect mix?
     </div>
         
     <div class='container' id='results'>
