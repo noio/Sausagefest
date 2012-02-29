@@ -13,21 +13,14 @@
         font-family: Helvetica, Arial, FreeSans, san-serif;
         color: #ffffff;
         }
-        #container {
-        margin: 0 auto;
-        width: 700px;
-        }
-        h1 { font-size: 3.8em; color: #dcf0db; margin-bottom: 3px; }
-        h1 .small { font-size: 0.4em; }
-        h1 a { text-decoration: none }
-        h2 { font-size: 1.5em; color: #dcf0db; }
-        h3 { text-align: center; color: #dcf0db; }
-        a { color: #dcf0db; }
-        .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-        .download { float: right; }
-        pre { background: #000; color: #fff; padding: 15px;}
-        hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-        .footer { text-align:center; padding-top:30px; font-style: italic; }
+        #container { margin: 0 auto;
+                     width: 800px; }
+        #icons #male { width: 400px; float: left; }
+        #icons #female {width: 400px; float: left; text-align: right;}
+        
+        #icons span { display: block; width: 60px; height: 120px; text-indent:-9999px;}
+        span.male   { background: url('male.png'); }
+        span.female { background: url('female.png'); float:right;}
     </style>
     <script type="text/javascript" charset="utf-8">
     // Beaver town
@@ -81,7 +74,7 @@
          });
     }
     
-    window.attendees = {};
+    window.attendees = {'1':{'gender':'male'},'2':{'gender':'female'}};
     function attending(eid){
         FB.api('/'+eid+'/attending', function(response){
             window.attendees = {}
@@ -98,18 +91,23 @@
         for (id in window.attendees)
         {
             var person = window.attendees[id];
-            $('#icons').append("<span>"+person.gender+"</span>")
+            var g = person.gender;
+            var span = $("<span>").addClass(g);
+            $('#icons #'+g).append(span);
+            span.fadeIn(1000);
         }
     }
-              
     </script>
   
-    <div class='container'>
+    <div id='container'>
         <a href="#" onclick="login(); return false;">Check on this event: </a>
         <div id='icons'>
-            
+            <div id='female'></div>
+            <div id='male'></div>
         </div>
     </div>
-
+<script type="text/javascript" charset="utf-8">
+vis()
+</script>
 </body>
 </html>
