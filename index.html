@@ -5,26 +5,41 @@
 
     <title>Is your party a sausagefest?</title>
     <script src="ender.min.js" type="text/javascript" charset="utf-8"></script>
-    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-
+    <link href='http://fonts.googleapis.com/css?family=Pacifico|Maven+Pro:700' rel='stylesheet' type='text/css'>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    
     <style type="text/css">
         body {
         margin-top: 1.0em;
-        background-color: #230f24;
-        font-family: Helvetica, Arial, FreeSans, sans-serif;
-        color: #ffffff;
+        background-color: #332621;
+        font-family: 'Maven Pro', Helvetica, Arial, FreeSans, sans-serif;
+        color: #dddddd;
+        letter-spacing: -1pt;
         }
         h1  {font-family: 'Pacifico'; }
-        #container { margin: 0 auto;
+
+        #eventinfo {width: 340px; margin: auto;}
+        #eventname {color: white}
+        
+        .container { margin: 0 auto;
                      width: 100%; }
+        .container:after { content: "."; display: block; height: 0; 
+                           clear: both; visibility: hidden; }
+
+        #results {width: 100%}
+        #results h1 { text-align: center; font-size: 3em; color: #E8E877;}
+        
         #icons #male { width: 50%; float: left; }
         #icons #female {width: 50%; float: left; text-align: right;}
-        
-        
-        
-        #icons span { display: block; width: 60px; height: 120px; text-indent:-9999px;}
+        #icons span { display: block; width: 45px; height: 90px; text-indent:-9999px;}
         span.male   { background: url('male.png'); float:left;}
         span.female { background: url('female.png'); float:right;}
+
+        #logins      { width: 100% }
+        #logins h1   { text-align: center; font-size: 3em; }
+        #logins h1 a { text-decoration: none; color: #5289BA;}
+        #logins h1 a:hover {color: #6BA6DD}
+        
     </style>
     <script type="text/javascript" charset="utf-8">
     // Beaver town
@@ -41,37 +56,24 @@
 <body>
     <div id="fb-root"></div>
     <script>
-    bonzo = require('bonzo');
     
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '376545645690668', // App ID
-        channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
-        status     : true, // check login status
-        cookie     : true, // enable cookies to allow the server to access the session
-        xfbml      : true  // parse XFBML
-      });
+    FB.init({
+      appId      : '376545645690668', // App ID
+      channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
 
-
-    };
-
-    // Load the SDK Asynchronously
-    (function(d){
-       var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement('script'); js.id = id; js.async = true;
-       js.src = "http://connect.facebook.net/en_US/all.js";
-       ref.parentNode.insertBefore(js, ref);
-     }(document));
-     
-    function login(){
+         
+    function loginAndFetch(eid){
         FB.login(function(response) {
            if (response.authResponse) {
-             console.log('Welcome!  Fetching your information.... ');
              FB.api('/me', function(response) {
                console.log('' + response.name + ' logged in.');
              });
-             attending('300480070013266');
+             fetchEvent(eid);
+             fetchAttending(eid);
            } else {
              console.log('User cancelled login or did not fully authorize.');
            }
@@ -79,7 +81,7 @@
     }
     
     window.attendees = {'1':{'gender':'male'},'2':{'gender':'female'}};
-    function attending(eid){
+    function fetchAttending(eid){
         FB.api('/'+eid+'/attending', function(response){
             window.attendees = {}
             for (var i = 0; i < response.data.length; i++){
@@ -92,6 +94,14 @@
         });
     }
     
+    function fetchEvent(eid){
+        console.log(eid);
+        FB.api('/'+eid, function(response){
+            window.eventinfo = response;
+            $('#eventname').html(response.name);
+        });
+    }
+    
     visTimeout = setTimeout("vis()",1000000000);
     function vislater(){
         clearTimeout(visTimeout);
@@ -99,26 +109,56 @@
     }
     
     function vis(){
-        for (id in window.attendees)
-        {
-            var person = window.attendees[id];
-            var g = person.gender;
-            var span = $("<span>").addClass(g);
-            $('#icons #'+g).append(span);
-            span.fadeIn(1000);
+        $('#results h1').css('opacity',0);
+        $('#results').show();
+        $('#logins').fadeOut(250);
+        window.toAdd = $.keys(window.attendees)
+        addOneByOne();
+    }
+    
+    function addOneByOne(){
+        var person = window.attendees[window.toAdd.pop()];
+        var g = person.gender;
+        var span = $("<span>").addClass(g);
+        $('#icons #'+g).append(span);
+        span.fadeIn(1000);
+        if (window.toAdd.length > 0){
+            setTimeout(addOneByOne, 100);
+        } else {
+            setTimeout(showVerdict, 300);
         }
     }
+    
+    function showVerdict(){
+        $('#results h1').fadeIn(400);
+    }
+    
+
+    $.domReady(function () {
+        if (window.location.hash != ""){
+            fetchEvent(window.location.hash.slice(1));
+        }
+    
+        $('#logins').fadeIn(250);
+        $('#results').hide();
+    })
+    
     </script>
   
-    <div id='container'>
-        <a href="#" onclick="login(); return false;">Check on this event: </a>
+    <div class='cointainer' id='eventinfo'>
+        So you want to know if &ldquo;<span id='eventname'>your event</span>&rdquo; has got the perfect mix?
+    </div>
+        
+    <div class='container' id='results'>
+        <h1>Nice!</h1>
         <div id='icons'>
             <div id='female'></div>
             <div id='male'></div>
         </div>
     </div>
-<script type="text/javascript" charset="utf-8">
-vis()
-</script>
+        
+    <div class='container' id='logins'>
+    <h1><a href="" onclick="loginAndFetch(window.location.hash); return false;">Check!</a></h1>
+    </div>
 </body>
 </html>
