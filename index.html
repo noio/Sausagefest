@@ -59,14 +59,28 @@
            FB.login(function(response) {
               if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ');
-                FB.api('/me/events', function(response) {
-                  console.log('Good to see you, ' + response.name + '.');
+                FB.api('/me', function(response) {
+                  console.log('' + response.name + ' logged in.');
                 });
               } else {
                 console.log('User cancelled login or did not fully authorize.');
               }
             });
+            
+            attending('300480070013266');
        }
+       
+       function attending(eid){
+           FB.api('/'+eid+'/attending', function(response){
+               window.attendees = {}
+               for (var i = 0; i < response.data.length; i++){
+                   FB.api('/'+eid, function(person){
+                       window.attendees[person.id] = person;
+                   });           
+               }
+           });
+       }
+              
     </script>
   
     <div class='container'>
