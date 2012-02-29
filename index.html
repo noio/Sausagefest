@@ -44,7 +44,7 @@
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '376545645690668', // App ID
-          channelUrl : '//http://noio.github.com/Sausagefest/channel.html', // Channel File
+          channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
           status     : true, // check login status
           cookie     : true, // enable cookies to allow the server to access the session
           xfbml      : true  // parse XFBML
@@ -58,14 +58,16 @@
          var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
          if (d.getElementById(id)) {return;}
          js = d.createElement('script'); js.id = id; js.async = true;
-         js.src = "//connect.facebook.net/en_US/all.js";
+         js.src = "http://connect.facebook.net/en_US/all.js";
          ref.parentNode.insertBefore(js, ref);
        }(document));
     </script>
   
     <h1><a href="https://github.com/noio/Sausagefest">Sausagefest</a>
       <span class="small">by <a href="https://github.com/noio">noio</a></span></h1>
-      
+          <fb:login-button perms="read_stream,publish_stream">
+            Grant Permissions to make more examples work
+          </fb:login-button>
       <a href="#" onclick="alertname(); return false;">CLICKME</a>
 </body>
 </html>
