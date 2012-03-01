@@ -59,6 +59,8 @@
 <body>
     <div id="fb-root"></div>
     <script>
+    bean = require('bean');
+    
     // CONSTANTS
     MEN = ["Sausagefest", "Dong city", "Banana republic"];
     WOMEN = ["Beaver town", "Taco fiesta", "Oyster farm"];
@@ -78,7 +80,12 @@
             $('#events ul').empty();
             for (var i = 0; i < window.events.length; i++){
                 var e = window.events[i]
-                var li = $("<li>");
+                var li  = $("<li>");
+                var a   = $("<a>").href('#'+e.id).attr('id', e.id);
+                a.bind('click', function(e){
+                    fetchAttendees($(this).attr('id'));
+                    e.preventDefault();
+                })
                 var img = $("<img>").attr('src',"https://graph.facebook.com/"+e.id+"/picture");
                 li.append(img);
                 li.append("<p>"+e.name+"</p>");
