@@ -94,11 +94,14 @@
     
     function fetchAttendees(event_id){
         FB.api('/'+event_id, function(response){
-            window.eventinfo = response;
             if (typeof response.name !== "undefined"){
-
+                // Cleanup
+                window.eventinfo = response;
+                window.attendees = {}
+                $('#icons #male').empty();
+                $('#icons #female').empty();
+                // Fetch attendees
                 FB.api('/'+event_id+'/attending', function(response){
-                    window.attendees = {}
                     var renderFinal = $.after(response.data.length, render);
                     for (var i = 0; i < response.data.length; i++){
                         FB.api('/'+response.data[i].id, function(person){
@@ -116,7 +119,7 @@
     function render(){
         $('#results h1').css('opacity',0);
         $('#results').show();
-        $('#logins').fadeOut(250);
+        $('#events').fadeOut(250, function(){$('#events').hide()});
         window.toAdd = $.keys(window.attendees)
         addOneByOne();
     }
@@ -152,7 +155,7 @@
     }
     
     function loggedIn(){
-        $('#logins').hide();
+        $('#logins').fadeOut(250, function(){$('#logins').hide()});
         if (window.location.hash != ""){
             var eventid = window.location.hash.slice(1);
             fetchAttendees(eventid);
