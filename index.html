@@ -102,6 +102,8 @@
                 window.attendees = {}
                 $('#icons #male').empty();
                 $('#icons #female').empty();
+                // Set results
+                $('#results .eventname').text(response.name);
                 // Fetch attendees
                 FB.api('/'+event_id+'/attending', function(response){
                     var renderFinal = $.after(response.data.length, render);
@@ -160,9 +162,8 @@
         if (window.location.hash != ""){
             var eventid = window.location.hash.slice(1);
             fetchAttendees(eventid);
-        } else {
-            fetchEvents();
-        }
+        } 
+        fetchEvents();
     }
     
     // PROCEDURE
@@ -214,7 +215,7 @@
     
     <div class='container' id='results'>
         <div class='container small'>
-            We did the math, and we came up with:
+            We did the math, and our rating for your event &ldquo;<span class="eventname"></span>&rdquo; is:
         </div>
         <h1>...</h1>
         <div id='icons'>
