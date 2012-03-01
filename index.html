@@ -87,8 +87,9 @@
                     e.preventDefault();
                 })
                 var img = $("<img>").attr('src',"https://graph.facebook.com/"+e.id+"/picture");
-                li.append(img);
-                li.append("<p>"+e.name+"</p>");
+                a.append(img);
+                a.append("<p>"+e.name+"</p>");
+                li.append(a);
                 $('#events ul').append(li);
             }
         });
