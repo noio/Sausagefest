@@ -40,7 +40,7 @@
         span.male   { background: url('male.png'); float:left;}
         span.female { background: url('female.png'); float:right;}
         
-        #logins      { text-align: center; }
+        #logins .button { text-align: center; margin-top: 1em;}
         #logins h1   { text-align: center; font-size: 3em; }
         #logins h1 a { text-decoration: none; color: #5289BA;}
         #logins h1 a:hover {color: #6BA6DD}
@@ -72,6 +72,7 @@
     
     
     function fetchEvents(){
+        
         FB.api('/me/events', function(response){
             window.events = response.data;
             $('#events ul').empty();
@@ -81,11 +82,10 @@
                 var a   = $("<a>").attr('href','#'+e.id).attr('id', e.id);
                 a.bind('click', function(e){
                     fetchAttendees($(this).attr('id'));
-                    e.preventDefault();
                 })
                 var img = $("<img>").attr('src',"https://graph.facebook.com/"+e.id+"/picture");
-                a.append(img);
                 a.text(e.name);
+                a.prepend(img);
                 li.append(a);
                 $('#events ul').append(li);
             }
@@ -112,7 +112,6 @@
             }
         });
     }
-    
     
     function render(){
         $('#results h1').css('opacity',0);
@@ -154,7 +153,12 @@
     
     function loggedIn(){
         $('#logins').hide();
-        fetchEvents();
+        if (window.location.hash != ""){
+            var eventid = window.location.hash.slice(1);
+            fetchAttendees(eventid);
+        } else {
+            fetchEvents();
+        }
     }
     
     // PROCEDURE
@@ -167,9 +171,6 @@
     });
     
     $.domReady(function () {
-        if (window.location.hash != ""){
-            window.eventid = window.location.hash.slice(1);
-        }
         FB.getLoginStatus(function(response) {
           if (response.status === 'connected') {
               loggedIn();
@@ -183,25 +184,22 @@
          });
         $('#logins').fadeIn(250);
         $('#results').hide();
-        $('#eventinfo .after').hide()
     })
     
     </script>
     
     <div id='header'>
     </div>
-  
-    <div class='container small'>
-        So you want to know if <span class='eventname'>your event</span> has got the perfect mix?
-    </div>
-    
-    <div class='container small' id='logins'>
-        Please <div class="fb-login-button" data-show-faces="false" data-width="70" data-max-rows="1" data-scope="user_events"></div>
         
-        <h1><a href="" onclick="loginAndFetch(); return false;">Check!</a></h1>
+    <div class='container small' id='logins'>
+        So you wanna know etc?
+        <div class='button'>
+            Please <div class="fb-login-button" data-show-faces="false" data-width="70" data-max-rows="1" data-scope="user_events"></div>
+        </div>
     </div>
     
     <div class='container small' id='events'>
+        Pick one of your events:
         <ul>
         <li>
             <a><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/174594_300480070013266_1323309303_q.jpg"></img> Event Name</a>
@@ -210,13 +208,15 @@
     </div>
     
     <div class='container' id='results'>
+        <div class='container small'>
+            We did the math, and we came up with:
+        </div>
         <h1>...</h1>
         <div id='icons'>
             <div id='female'></div>
             <div id='male'></div>
         </div>
     </div>
-        
     
     <div id='footer'>
         <div class="fb-like" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark" data-font="lucida grande"></div>        
