@@ -51,8 +51,7 @@
         #events li a { display: block; border-radius: 6px; margin: 5px; padding: 2px 8px 2px 2px;
                        color: black; background: #E8E877; font-size: 14px; text-decoration:none}
         #events li a:hover{ background: white; }               
-        #events li a img { vertical-align: -8px; border-radius: 4px; height: 25px; margin: 0 5px 0; }
-        
+        #events li a img { vertical-align: -8px; border-radius: 4px; height: 25px; margin: 0 5px 0 0; }
         
         #footer     {position:absolute; bottom: 5px; right: 5px;}
     </style>
@@ -96,14 +95,15 @@
     }
     
     function fetchAttendees(event_id){
+        window.attendees = {}
+        $('#results h1').css('opacity',0);
+        $('#icons #male').empty();
+        $('#icons #female').empty();
+        
         FB.api('/'+event_id, function(response){
             if (typeof response.name !== "undefined"){
                 // Cleanup
                 window.eventinfo = response;
-                window.attendees = {}
-                $('#results h1').hide();
-                $('#icons #male').empty();
-                $('#icons #female').empty();
                 // Set results
                 $('#results .eventname').text(response.name);
                 // Fetch attendees
