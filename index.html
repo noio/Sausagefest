@@ -40,7 +40,7 @@
         span.male   { background: url('male.png'); float:left;}
         span.female { background: url('female.png'); float:right;}
         
-        #logins .button { text-align: center; margin-top: 1em;}
+        #logins .fb-login-button { text-align: center; margin-top: 1em;}
         #logins h1   { text-align: center; font-size: 3em; }
         #logins h1 a { text-decoration: none; color: #5289BA;}
         #logins h1 a:hover {color: #6BA6DD}
@@ -183,6 +183,7 @@
           }
          });
         $('#logins').fadeIn(250);
+        $('#events').hide();
         $('#results').hide();
     })
     
@@ -193,9 +194,7 @@
         
     <div class='container small' id='logins'>
         So you wanna know etc?
-        <div class='button'>
-            Please <div class="fb-login-button" data-show-faces="false" data-width="70" data-max-rows="1" data-scope="user_events"></div>
-        </div>
+        <div class="fb-login-button" data-show-faces="false" data-width="70" data-max-rows="1" data-scope="user_events"></div>
     </div>
     
     <div class='container small' id='events'>
