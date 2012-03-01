@@ -48,10 +48,10 @@
         
         #events ul { list-style:none; margin: 0; padding: 0; }
         #events li { display: block; float: left; }
-        #events li a { display: block; border-radius: 6px; margin: 5px; padding: 2px 10px 2px 2px;
-                       color: black; background: #E8E877; font-size: 14px}
+        #events li a { display: block; border-radius: 6px; margin: 5px; padding: 2px 8px 2px 2px;
+                       color: black; background: #E8E877; font-size: 14px; text-decoration:none}
         #events li a:hover{ background: white; }               
-        #events li a img { vertical-align: -8px; border-radius: 4px; height: 25px; margin: 0 3px 0; }
+        #events li a img { vertical-align: -8px; border-radius: 4px; height: 25px; margin: 0 5px 0; }
         
         
         #footer     {position:absolute; bottom: 5px; right: 5px;}
@@ -101,6 +101,7 @@
                 // Cleanup
                 window.eventinfo = response;
                 window.attendees = {}
+                $('#results h1').hide();
                 $('#icons #male').empty();
                 $('#icons #female').empty();
                 // Set results
@@ -199,7 +200,7 @@
     </div>
         
     <div class='container small' id='logins'>
-        So you wanna know etc?
+        So you want to find out if your event has the perfect balance of sweet dudes and suave chicks? 
         <div class="fb-login-button" data-show-faces="false" data-width="70" data-max-rows="1" data-scope="user_events"></div>
     </div>
     
@@ -226,8 +227,7 @@
     </div>
     
     <div id='footer'>
-        <div class="fb-like" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark" data-font="lucida grande"></div>        
-        made by <a href="http://www.noio.nl">noio</a>
+<div class="fb-like" data-href="http://noio.github.com/Sausagefest/" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark" data-font="verdana"></div>        made by <a href="http://www.noio.nl">noio</a>
     </div>
 </body>
 </html>
