@@ -72,7 +72,7 @@
     
     
     function fetchEvents(){
-        
+        $("#events").fadeIn(1000);
         FB.api('/me/events', function(response){
             window.events = response.data;
             $('#events ul').empty();
