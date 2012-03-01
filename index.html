@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
     <meta charset='utf-8'>
 
     <title>Is your party a sausagefest?</title>
+    
+    
     <script src="ender.min.js" type="text/javascript" charset="utf-8"></script>
     <link href='http://fonts.googleapis.com/css?family=Pacifico|Maven+Pro:700' rel='stylesheet' type='text/css'>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
@@ -19,11 +21,13 @@
         h1      {font-family: 'Pacifico'; }
         a       {color: #5289BA;}
         a:hover {color: #6BA6DD}
-        #eventinfo {width: 400px; margin: auto;}
+        
+
         .eventname {color: white; display: inline-block;}
         
         .container { margin: 0 auto;
                      width: 100%; }
+        .container.small {width: 400px; margin: auto;}
         .container:after { content: "."; display: block; height: 0; 
                            clear: both; visibility: hidden; }
 
@@ -35,11 +39,17 @@
         #icons span { display: block; width: 45px; height: 90px; text-indent:-9999px;}
         span.male   { background: url('male.png'); float:left;}
         span.female { background: url('female.png'); float:right;}
-
-        #logins      { width: 100% }
+        
+        #logins      { text-align: center; }
         #logins h1   { text-align: center; font-size: 3em; }
         #logins h1 a { text-decoration: none; color: #5289BA;}
         #logins h1 a:hover {color: #6BA6DD}
+        
+        #events ul { list-style:none; margin: 0; padding: 0; }
+        #events li a { display: block; border-radius: 10px; margin: 5px 0; padding: 10px;
+                       color: black; background: #E8E877; font-size: 20px}
+        #events li a img { vertical-align: middle; border-radius: 4px;}
+        
         
         #footer     {position:absolute; bottom: 5px; right: 5px;}
     </style>
@@ -49,68 +59,57 @@
 <body>
     <div id="fb-root"></div>
     <script>
-    
+    // CONSTANTS
     MEN = ["Sausagefest", "Dong city", "Banana republic"];
     WOMEN = ["Beaver town", "Taco fiesta", "Oyster farm"];
     EVEN = ["Nice!"];
-    
-    FB.init({
-      appId      : '376545645690668', // App ID
-      channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
-      status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true  // parse XFBML
-    });
 
-         
-    function loginAndFetch(){
-        $('#login h1').html("Checking...");
-        $('#eventinfo .before').hide(250);
-        eid = window.eventid;
-        FB.login(function(response) {
-           if (response.authResponse) {
-             FB.api('/me', function(response) {
-               console.log('' + response.name + ' logged in.');
-             });
-             fetchEvent(eid);
-             fetchAttending(eid);
-           } else {
-             console.log('User cancelled login or did not fully authorize.');
-           }
-         });
+    window.attendees = {'1':{'gender':'male'},'2':{'gender':'female'}};
+
+    // FUNCTIONS
+    
+    function setup(){
+        
     }
     
-    window.attendees = {'1':{'gender':'male'},'2':{'gender':'female'}};
-    function fetchAttending(eid){
-        FB.api('/'+eid+'/attending', function(response){
-            window.attendees = {}
-            for (var i = 0; i < response.data.length; i++){
-
-                FB.api('/'+response.data[i].id, function(person){
-                    window.attendees[person.id] = person;
-                    vislater();
-                });           
+    function fetchEvents(){
+        FB.api('/me/events', function(response){
+            window.events = response.data;
+            $('#events ul').empty();
+            for (var i = 0; i < window.events.length; i++){
+                var e = window.events[i]
+                var li = $("<li>");
+                var img = $("<img>").src("https://graph.facebook.com/"+e+"/picture");
+                li.append(img);
+                li.append("<p>"+e.name+"</p>");
+                $('#events ul').append(li);
             }
         });
     }
     
-    function fetchEvent(eid){
-        console.log(eid);
-        FB.api('/'+eid, function(response){
+    function fetchAttendees(event_id){
+        FB.api('/'+event_id, function(response){
             window.eventinfo = response;
             if (typeof response.name !== "undefined"){
-                $('.eventname').html('&ldquo;'+response.name+'&rdquo;');
+
+                FB.api('/'+event_id+'/attending', function(response){
+                    window.attendees = {}
+                    var renderFinal = $.after(response.data.length, render);
+                    for (var i = 0; i < response.data.length; i++){
+                        FB.api('/'+response.data[i].id, function(person){
+                            window.attendees[person.id] = person;
+                            renderFinal();
+                        });           
+                    }
+                });
+            } else {
+                //Fallback
             }
         });
     }
     
-    visTimeout = setTimeout("vis()",1000000000);
-    function vislater(){
-        clearTimeout(visTimeout);
-        visTimeout = setTimeout("vis()",1000);
-    }
     
-    function vis(){
+    function render(){
         $('#results h1').css('opacity',0);
         $('#results').show();
         $('#logins').fadeOut(250);
@@ -119,7 +118,6 @@
     }
     
     function addOneByOne(){
-        $('#eventinfo .after').fadeIn(250);
         var person = window.attendees[window.toAdd.pop()];
         var g = person.gender;
         var span = $("<span>").addClass(g);
@@ -149,7 +147,15 @@
         $('#eventinfo').html("We did the math and our rating for <span class='eventname'>&ldquo;" + window.eventinfo.name + "&rdquo;</span> is:");
     }
     
-
+    // PROCEDURE
+    FB.init({
+      appId      : '376545645690668', // App ID
+      channelUrl : '//noio.github.com/Sausagefest/channel.html', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+    
     $.domReady(function () {
         if (window.location.hash != ""){
             window.eventid = window.location.hash.slice(1);
@@ -161,11 +167,28 @@
     })
     
     </script>
+    
+    <div id='header'>
+    </div>
   
-    <div class='cointainer' id='eventinfo'>
+    <div class='container small'>
         So you want to know if <span class='eventname'>your event</span> has got the perfect mix?
     </div>
+    
+    <div class='container small' id='logins'>
+        Please <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" scope="user_events"></div>
         
+        <h1><a href="" onclick="loginAndFetch(); return false;">Check!</a></h1>
+    </div>
+    
+    <div class='container small' id='events'>
+        <ul>
+        <li>
+            <a><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-snc4/174594_300480070013266_1323309303_q.jpg"></img> Event Name</a>
+        </li>
+        </ul>
+    </div>
+    
     <div class='container' id='results'>
         <h1>...</h1>
         <div id='icons'>
@@ -174,11 +197,9 @@
         </div>
     </div>
         
-    <div class='container' id='logins'>
-    <h1><a href="" onclick="loginAndFetch(); return false;">Check!</a></h1>
-    </div>
     
     <div id='footer'>
+        <div class="fb-like" data-send="true" data-width="450" data-show-faces="true" data-colorscheme="dark" data-font="lucida grande"></div>        
         made by <a href="http://www.noio.nl">noio</a>
     </div>
 </body>
