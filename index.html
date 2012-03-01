@@ -70,9 +70,6 @@
 
     // FUNCTIONS
     
-    function setup(){
-        
-    }
     
     function fetchEvents(){
         FB.api('/me/events', function(response){
@@ -88,7 +85,7 @@
                 })
                 var img = $("<img>").attr('src',"https://graph.facebook.com/"+e.id+"/picture");
                 a.append(img);
-                a.append("<p>"+e.name+"</p>");
+                a.text(e.name);
                 li.append(a);
                 $('#events ul').append(li);
             }
@@ -155,6 +152,11 @@
         $('#eventinfo').html("We did the math and our rating for <span class='eventname'>&ldquo;" + window.eventinfo.name + "&rdquo;</span> is:");
     }
     
+    function loggedIn(){
+        $('#logins').hide();
+        fetchEvents();
+    }
+    
     // PROCEDURE
     FB.init({
       appId      : '376545645690668', // App ID
@@ -167,8 +169,18 @@
     $.domReady(function () {
         if (window.location.hash != ""){
             window.eventid = window.location.hash.slice(1);
-            fetchEvent(window.eventid);
         }
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+              loggedIn();
+          } else {
+              FB.Event.subscribe('auth.login', function(response) {
+                  if (response.status === 'connected') {
+                      loggedIn();
+                  }
+              });
+          }
+         });
         $('#logins').fadeIn(250);
         $('#results').hide();
         $('#eventinfo .after').hide()
