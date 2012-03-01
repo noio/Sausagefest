@@ -81,7 +81,7 @@
             for (var i = 0; i < window.events.length; i++){
                 var e = window.events[i]
                 var li  = $("<li>");
-                var a   = $("<a>").href('#'+e.id).attr('id', e.id);
+                var a   = $("<a>").attr('href','#'+e.id).attr('id', e.id);
                 a.bind('click', function(e){
                     fetchAttendees($(this).attr('id'));
                     e.preventDefault();
